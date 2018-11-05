@@ -23,8 +23,6 @@ public class TripleDES {
 		
 		//Create the 64bit counter which was randomly initalised
 		initialCounter = new byte[] {one, two, three, four, five, six, seven, eight};
-		
-		//initialCounter = new byte[] {1, 2, 3, 4, 5, 6, 7, 8};
 	}
 	
 	

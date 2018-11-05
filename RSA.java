@@ -3,20 +3,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 public class RSA {
 
-    /**
-     * CLASS DEMO ONLY - DO NOT RUN AS MAIN PROJECT
-     */
-    public static void main(String[] args) {
-
-        KeyPair pair = generateRSAKeys();
-        
-        String plaintext = "Hello this is a testing long message.";
-        byte[] ciphertext = encrypt(plaintext, pair.getPrivateKey());
-        String decryptedText = decrypt(ciphertext, pair.getPublicKey());
-    }
-
-
-
+    
     public static KeyPair generateRSAKeys() {
 
         //The variables used to calculate the RSA keys
@@ -70,9 +57,9 @@ public class RSA {
     }
 
 
-    public static byte[] encrypt(String plaintext, RSAKey key) {
+    public static byte[] sign(String plaintext, RSAKey key) {
 
-        System.out.println("RSA Encryption: Signing Message");
+        System.out.println("Creating a Digital Signature");
 
         //Create a digest of the plaintext
         String digest = SHA256.generateDigest(plaintext);
@@ -85,16 +72,25 @@ public class RSA {
     }
 
 
-    public static String decrypt(byte[] ciphertext, RSAKey key) {
-        System.out.println("RSA Decryption: Verifying Digitial Signature");
+    public static boolean verify(byte[] ciphertext, RSAKey key, String digestToCompare) {
+        System.out.println("Verifying Digitial Signature");
 
         //Decrypt the message
         BigInteger number = new BigInteger(ciphertext);
         BigInteger result = number.modPow(key.getX(), key.getN());
         
-        //Confirm the decrypted message back to plaintext and return
+        //Confirm the decrypted message back to plaintext
         byte[] plaintextBytes = result.toByteArray();
         String plaintext = new String(plaintextBytes, StandardCharsets.UTF_8);
-        return plaintext;
+        
+        //Compare the decrypted message against the digestToCompare
+        boolean isVerified = plaintext.equals(digestToCompare);
+
+        if(isVerified)
+            System.out.println("Digital Signature Verification SUCCESSFUL.");
+        else
+            System.out.println("Digital Signature Verification FAILED.");
+
+        return isVerified;
     }
 }

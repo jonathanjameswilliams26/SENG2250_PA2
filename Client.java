@@ -22,7 +22,7 @@ public class Client {
 
 
     protected void calcSessionKey(BigInteger gY) {
-        System.out.println(name + ": " + "Calculating Session Key");
+        System.out.println("Calculating Session Key");
         sessionKey = dh.genSessionKey(gY);
         System.out.println("Session Key: " + sessionKey);
     }
@@ -38,5 +38,13 @@ public class Client {
 
     protected DiffieHellman getDH() {
         return dh;
+    }
+
+    protected void printHeader() {
+        System.out.println(name + ": --------------------------------------------------");
+    }
+
+    protected void printFooter() {
+        System.out.println("-----------------------------------------------------------\n");
     }
 }
