@@ -54,7 +54,7 @@ public class Bob extends Client {
         //Decrypt the ciphertext using 3DES with counter mode
         System.out.println("Decrypting message using 3DES with counter mode");
         TripleDES decryption = new TripleDES(messageReceived.getCounterUsed());
-        byte[] plaintext = decryption.counterMode(messageReceived.getCipertext(), sessionKey);
+        byte[] plaintext = decryption.counterMode(messageReceived.getCiphertext(), sessionKey);
         System.out.println("Decryption complete.");
 
         //Decrypt the digital signature using Alice's RSA public key to get the digest she signed

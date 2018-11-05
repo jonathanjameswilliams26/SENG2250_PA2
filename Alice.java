@@ -21,7 +21,7 @@ public class Alice extends Client {
         //Decrypt the ciphertext using 3DES with counter mode
         System.out.println("Decrypting message using 3DES with counter mode");
         TripleDES decryption = new TripleDES(messageReceived.getCounterUsed());
-        byte[] plaintext = decryption.counterMode(messageReceived.getCipertext(), sessionKey);
+        byte[] plaintext = decryption.counterMode(messageReceived.getCiphertext(), sessionKey);
         System.out.println("Decryption complete.");
 
         //Verify the signature

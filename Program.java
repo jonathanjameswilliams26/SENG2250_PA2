@@ -29,6 +29,9 @@ public class Program {
 
         //The STS Protocol is now complete, both Alice and Bob have been authenticated
         printSectionTitle("STS Protocol Complete");
+
+        //Bob sends the first message to Alice
+        bob.send(alice);
     }
 
     public static void printSectionTitle(String title) {

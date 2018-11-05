@@ -20,7 +20,7 @@ public class Message {
 		return counterUsed;
 	}
 	
-	public byte[] getCipertext() {
+	public byte[] getCiphertext() {
 		return ciphertext;
     }
     

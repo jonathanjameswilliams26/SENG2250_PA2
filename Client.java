@@ -1,4 +1,6 @@
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class Client {
     protected String name;
@@ -46,5 +48,52 @@ public class Client {
 
     protected void printFooter() {
         System.out.println("-----------------------------------------------------------\n");
+    }
+
+
+    protected void send(Client sendTo) {
+
+        //Capture user input
+        String message = "";
+        Scanner in = new Scanner(System.in);
+        while (message.equals(""))
+        {
+            System.out.println(name + " please enter a message, please type EXIT to exit application: ");
+            message = in.nextLine();
+
+            if(message.equals(""))
+                System.out.println("Error: You must enter a message:");
+        }
+
+        //Exit the application if the user entered EXIT
+        if(message.equals("EXIT"))
+            System.exit(1);
+
+        //Encrypt the message using 3DES with counter mode
+        TripleDES encryption = new TripleDES();
+        byte[] ciphertext = encryption.counterMode(message.getBytes(StandardCharsets.UTF_8), sessionKey);
+
+        //Create the message to send to the other client
+        Message messageToSend = new Message(ciphertext, encryption.getInitialCounter());
+
+        printFooter();
+        sendTo.receive(this, messageToSend);
+    }
+
+
+    protected void receive(Client sentBy, Message messageReceived) {
+
+        printHeader();
+
+        //Decrypt the message using 3DES with counter mode
+        TripleDES decryption = new TripleDES(messageReceived.getCounterUsed());
+        byte[] plaintextBytes = decryption.counterMode(messageReceived.getCiphertext(), sessionKey);
+        String plaintext = new String(plaintextBytes, StandardCharsets.UTF_8);
+
+        //Print the received message
+        System.out.println("Message Received: " + plaintext);
+
+        //Send a message to the sentBy
+        send(sentBy);
     }
 }
