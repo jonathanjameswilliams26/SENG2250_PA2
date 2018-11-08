@@ -94,7 +94,10 @@ public class Client {
 
         //Exit the application if the user entered EXIT
         if(message.equals("EXIT"))
+        {
+            in.close();
             System.exit(1);
+        }
 
         //Encrypt the message using 3DES with counter mode
         TripleDES encryption = new TripleDES();
