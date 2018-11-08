@@ -91,7 +91,6 @@ public class Client {
             if(message.equals(""))
                 System.out.println("Error: You must enter a message:");
         }
-        in.close();
 
         //Exit the application if the user entered EXIT
         if(message.equals("EXIT"))
