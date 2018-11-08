@@ -1,14 +1,33 @@
 import java.math.BigInteger;
 
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class is a subclass of Client.java, this is an Bob client during the STS protocol and
+ * message exchange. Bob will communicate with Alice
+ */
 public class Bob extends Client {
 
-    private BigInteger gA;
+    private BigInteger gA; //Alice's public Diffie Hellman value
 
+    /**
+     * Constructor
+     */
     public Bob() {
         super("Bob");
     }
 
 
+
+    /**
+     * Bob will complete Step 1 of the STS protocol.
+     * Bob receives g^a from Alice and computes the session key.
+     * Bob then generates a message to send to Alice, Message = g^b, E(sign[g^b, g^a])
+     * @param gA - Alice's public Diffie Hellman value used to generate the session key
+     * @return The message g^b, E(sign[g^b, g^a]) which will be sent to Alice
+     */
     public Message STS_step1(BigInteger gA) {
 
         printHeader();
@@ -23,7 +42,7 @@ public class Bob extends Client {
         //Creating the plaintext message as "<Bobs g^b value>,<Alices g^a value>" as described in the lecture slides
 		String plaintext =  dh.getGX().toString() + "," + gA.toString();
         
-        //Create a digital signature of the message
+        //Create a digital signature of the message using Bobs private RSA key
         byte[] signedMessage = RSA.sign(plaintext, rsaKeys.getPrivateKey());
 
         //Encrypt the digital signature using 3DES with counter mode
@@ -41,6 +60,15 @@ public class Bob extends Client {
     }
 
 
+
+
+    /**
+     * Bob completes step 3 of the STS protocol.
+     * Bob receives a encrypted message from Alice E(sign[g^a,g^b]).
+     * Bob decrypts the message using the session key and verifies the message sent by Alice
+     * to complete the STS protocol.
+     * @param messageReceived - the message E(sign[g^a,g^b]) sent by Alice
+     */
     public void STS_step3(Message messageReceived) {
         printHeader();
         System.out.println("Received encrypted message from Alice");

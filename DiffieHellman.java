@@ -1,30 +1,25 @@
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class acts as the Diffie Hellman key exchange, storing all values in regards to the 
+ * DH key exchange and has the responsibility of calculating the session key.
+ */
 public class DiffieHellman {
 
-    private static BigInteger p;
-    private static BigInteger g;
-    private int x;
-    private BigInteger gX;
-
-    /**
-     * CLASS DEMO ONLY - DO NOT RUN AS MAIN PROJECT
-     */
-    public static void main(String[] args) {
-        DiffieHellman dh1 = new DiffieHellman();
-        DiffieHellman dh2 = new DiffieHellman();
-
-        String sessionKey1 = dh1.genSessionKey(dh2.getGX());
-        String sessionKey2 = dh2.genSessionKey(dh1.getGX());
-
-        System.out.println(sessionKey1);
-        System.out.println(sessionKey2);
-    }
+    private static BigInteger p;    //The public prime number
+    private static BigInteger g;    //The public generator
+    private int x;                  //The clients private value
+    private BigInteger gX;          //The clients public value
 
 
     /**
-     * Constructor, creates a random private value and generates all required diffie hellman values
+     * Constructor, creates a random private value and 
+     * generates all required diffie hellman values
      */
     public DiffieHellman() {
         
@@ -43,10 +38,7 @@ public class DiffieHellman {
     }
 
 
-    /**
-     * Getter
-     * @return gX
-     */
+    //GETTER
     public BigInteger getGX() {
         return gX;
     }

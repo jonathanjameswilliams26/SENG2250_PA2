@@ -4,10 +4,28 @@ import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class represents the 3DES encryption with counter mode.
+ * Used to encrypt and decrypt messages.
+ */
 public class TripleDES {
 
-    private byte[] initialCounter;
 
+	//The initial counter used when encrypting a message.
+	//Will be sent to the receiver so they can use the same inital counter to decrypt the message
+	private byte[] initialCounter; 
+	
+
+
+	/**
+	 * Create the 3DES class with a random 64bit counter.
+	 */
     public TripleDES() {
 		
 		//Create a 64 bit counter to be used for the 3DES encryption
@@ -26,15 +44,29 @@ public class TripleDES {
 	}
 	
 	
+	/**
+	 * Create the 3DES class with the specified initial counter
+	 * @param initialCounter
+	 */
 	public TripleDES(byte[] initialCounter) {
 		this.initialCounter = initialCounter;
     }
-    
+	
+	
+	//GETTER
     public byte[] getInitialCounter() {
 		return initialCounter;
     }
     
 
+
+
+	/**
+	 * The 3DES with counter mode. Used for both encryption and decryption.
+	 * @param message - The message to encrypt of decrypt
+	 * @param sessionKey - The session key used to encrypt or decrypt the message
+	 * @return - The byte array of the encrypted or decrypted message
+	 */
     public byte[] counterMode(byte[] message, String sessionKey) {
 		
 		//Create a 24 byte array from the session key which will act as the DES encryption key
@@ -58,6 +90,7 @@ public class TripleDES {
 			
 			while(messageBytesIndex < message.length)
 			{
+				//Determine how many bytes are left in the message
 				int blockSize = message.length - messageBytesIndex;
 				byte[] messageBlock = null;
 				
@@ -74,7 +107,7 @@ public class TripleDES {
 				//Encrypt the counter using 3DES
 				byte[] encryptedCounter = cipher.doFinal(counter);
 				
-				//Perform the XOR
+				//Perform the XOR with the counter and the plaintext
 				byte[] xor = new byte[messageBlock.length];
 				for(int i = 0; i < messageBlock.length; i++)
 				{
@@ -102,6 +135,15 @@ public class TripleDES {
     }
     
 
+
+	/**
+	 * Increments the counter used for encryption or decryption.
+	 * Checks the last index of the counter and if the byte is not
+	 * at the maximum value it is increased. Otherwise, the previous
+	 * index is checked and increased, otherwise it finds the next index to increase.
+	 * @param counter - The counter which is being incremented
+	 * @return - The incremented counter
+	 */
     private byte[] incrementCounter(byte[] counter) {
 		
 		boolean complete = false;
@@ -119,7 +161,6 @@ public class TripleDES {
 			else
 				i--;
 		}
-		
 		return counter;
 	}
 }

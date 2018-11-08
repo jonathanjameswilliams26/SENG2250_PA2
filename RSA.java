@@ -1,9 +1,22 @@
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class represent an RSA generator which generates RSA public and private key pairs
+ * and also performs digital signatures and digital signature verficiation.
+ */
 public class RSA {
 
-    
+
+    /**
+     * Generate a RSA public and private key pair
+     * @return - A RSA public/private key pair
+     */
     public static KeyPair generateRSAKeys() {
 
         //The variables used to calculate the RSA keys
@@ -57,6 +70,16 @@ public class RSA {
     }
 
 
+
+
+    /**
+     * Digitally sign a message.
+     * Creates a message digest of the plaintext using SHA256
+     * and then signs the digest using the RSA key passed in.
+     * @param plaintext - The plaintext to sign
+     * @param key - The RSA key used to sign the message
+     * @return - The digital signature
+     */
     public static byte[] sign(String plaintext, RSAKey key) {
 
         System.out.println("Creating a Digital Signature");
@@ -72,6 +95,17 @@ public class RSA {
     }
 
 
+
+
+    /**
+     * Verifies a digital signature.
+     * Decrypts the signed message to obtain the message digest
+     * and then compares the received digest against the digital signature received.
+     * @param ciphertext - The signed ciphertext
+     * @param key - The key to verify the digital signature
+     * @param digestToCompare - The correct message digest which will be compared agaist the digital signature
+     * @return
+     */
     public static boolean verify(byte[] ciphertext, RSAKey key, String digestToCompare) {
         System.out.println("Verifying Digitial Signature");
 

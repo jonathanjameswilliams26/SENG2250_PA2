@@ -1,3 +1,11 @@
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class is the main program which demostrates the STS protocol and secure message exchange between
+ * Alice and Bob using 3DES with counter mode. Run this class as the main program.
+ */
 public class Program {
     public static void main(String[] args) {
         
@@ -31,9 +39,15 @@ public class Program {
         printSectionTitle("STS Protocol Complete");
 
         //Bob sends the first message to Alice
+        //The method will call receive() and then receive calls send() again forming a loop
         bob.send(alice);
     }
 
+
+    /**
+     * Prints a title to the console.
+     * @param title - The title to print
+     */
     public static void printSectionTitle(String title) {
         System.out.println("\n**********************************************************************");
         System.out.println(title);

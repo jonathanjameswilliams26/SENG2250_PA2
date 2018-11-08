@@ -1,14 +1,33 @@
 import java.math.BigInteger;
 
+/**
+ * @author Jonathan Williams - 3237808
+ * SENG2250 - PA 3
+ * 
+ * Class Description:
+ * This class is a subclass of Client.java, this is an Alice client during the STS protocol and
+ * message exchange. Alice will communicate with bob
+ */
 public class Alice extends Client {
 
-    private BigInteger gB;
+    private BigInteger gB;  //Bobs public Diffie Hellman value
 
+
+    /**
+     * Constructor
+     */
     public Alice() {
         super("Alice");
     }
 
 
+
+    /**
+     * Alice completes step 2 of the STS protocol.
+     * Alice receives a message from Bob g^b, E(sign[g^b,g^a]).
+     * Alice computes the session key and decrypts the message and confirms the signed message is correct
+     * @param messageReceived - The message received from Bob
+     */
     public void STS_step2(Message messageReceived) {
         printHeader();
 
@@ -32,10 +51,10 @@ public class Alice extends Client {
         //The correct digest generated from the expected message
         String correctMessageDigest = SHA256.generateDigest(expectedMessage);
 
-        //Decrypt the digital signature using Alice's RSA public key to get the digest she signed
+        //Decrypt the digital signature using Bobs's RSA public key to get the digest he signed
         boolean authenticated = RSA.verify(plaintext, otherPublicKey, correctMessageDigest);
 
-        //Confirm Alice is authenticated, if not exit the application
+        //Confirm Bob is authenticated, if not exit the application
         if(authenticated)
             System.out.println("SUCCESS: Bob is authenticated.");
         else
@@ -47,6 +66,14 @@ public class Alice extends Client {
     }
 
 
+
+
+    /**
+     * Alice completes step 3 of the STS protocol.
+     * Alice generates a message to send to Bob to verify.
+     * Alice generates a message E(sign[g^a,g^b]) which will be sent to Bob
+     * @return - The message to send to Bob = E(sign[g^a,g^b])
+     */
     public Message STS_step3() {
         printHeader();
 
